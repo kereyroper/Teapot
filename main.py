@@ -14,6 +14,8 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 		s.end_headers()
 
 	def do_GET(s):
+		if s.path == "/":
+			s.path = "/index.html"
 		ext = os.path.splitext(s.path)[1]
 		try:
 			f = open(s.path[1:])
@@ -34,7 +36,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 		s.send_response(418)
 		s.send_header("Content-type", "text/html")
 		s.end_headers()
-		f = open("index.html")
+		f = open("teapot.html")
 		s.wfile.write(f.read())
 		f.close()
 
