@@ -3,7 +3,7 @@ from mimetypes import types_map
 import os
 
 
-HOST_NAME = "localhost"
+HOST_NAME = ""
 PORT_NUMBER = 8080
 
 
