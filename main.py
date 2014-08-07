@@ -12,17 +12,29 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 		s.send_response(200)
 		s.send_header("Content-type", "text/html")
 		s.end_headers()
+
 	def do_GET(s):
-		fname, ext = os.path.splitext(s.path)
-		if s.path == "/":
-			s.send_response(418)
-			s.send_header("Content-type", "text/html")
-			s.path = "/index.html"
-		else: #if ext in (".html", ".css", ".js", ".png", ".ico"):
-			s.send_response(200)
-			s.send_header('Content-type', types_map[ext])
+		ext = os.path.splitext(s.path)[1]
+		try:
+			f = open(s.path[1:])
+		except IOError:
+			s.send_response(404)
+			s.end_headers()
+			return
+		s.send_response(200)
+		s.send_header('Content-type', types_map[ext])
 		s.end_headers()
-		f = open(s.path[1:])
+		s.wfile.write(f.read())
+		f.close()
+
+	def do_POST(s):
+		s.do_BREW()
+
+	def do_BREW(s):
+		s.send_response(418)
+		s.send_header("Content-type", "text/html")
+		s.end_headers()
+		f = open("index.html")
 		s.wfile.write(f.read())
 		f.close()
 
